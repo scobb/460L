@@ -17,6 +17,16 @@
     <url-pattern>/blog</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>newPost</servlet-name>
+    <servlet-class>blog.NewPostServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>newPost</servlet-name>
+    <url-pattern>/new_post</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>
