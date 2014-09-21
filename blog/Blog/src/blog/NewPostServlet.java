@@ -37,7 +37,9 @@ public class NewPostServlet extends HttpServlet {
 		try {
 			if (!body.isEmpty() && !title.isEmpty()) {
 				// create post object
-				BlogDAO.INSTANCE.saveBlogPost(author, title, body);
+				if (!BlogDAO.INSTANCE.saveBlogPost(author, title, body)) {
+					// Handle case where title already exists... maybe as simple as a redirect and ask for a new title?
+				};
 			}
 		} catch (Exception e) {
 			throw new IOException(e.getMessage());

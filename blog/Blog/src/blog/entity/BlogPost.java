@@ -18,6 +18,7 @@ public class BlogPost implements Serializable {
 	private String author;
 	private String body;
 	private Date timestamp;
+	private boolean newPost;
 	
 	/**Constructor **/
 	public BlogPost(String author, Key title, String body){
@@ -25,6 +26,7 @@ public class BlogPost implements Serializable {
 		this.title = title;
 		this.body = body;
 		this.timestamp = new Date();
+		this.setNewPost(true);
 	}
 	/** display method **/
 	public String displayHtml() {
@@ -70,6 +72,12 @@ public class BlogPost implements Serializable {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public boolean isNewPost() {
+		return newPost;
+	}
+	public void setNewPost(boolean newPost) {
+		this.newPost = newPost;
 	}
 
 }

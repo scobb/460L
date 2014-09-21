@@ -1,4 +1,4 @@
-<%@page import="blog.util.TestBlogPostLoad"%>
+<%@page import="blog.util.TestBlogPostLoad,blog.util.TestSubscriber"%>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -10,13 +10,16 @@
 
 	<%--  <<%=TestBlogPostLoad.deleteAllPosts() %> --%>
 	<br>
-	<%=TestBlogPostLoad.addPosts() %>
+	<%-- <%=TestBlogPostLoad.addPosts() --%>
 	<hr>
 
 
-	<%-- <%=TestBlogPostLoad.getBlogPosts()--%>
+	<%-- <%=TestBlogPostLoad.getBlogPosts()%> --%>
 	<br>
-	<%--     <%=TestBlogPostLoad.getBlogPost() %> <br> --%>
+	<%-- <%=TestBlogPostLoad.getBlogPost()%> --%>
+ 	<%=TestSubscriber.addSubscriber("Steve Cobb",
+					"scobb1@utexas.edu")%>
+	<br>
 	<a href="Blog.html">Back to Home</a>
 </body>
 </html>
