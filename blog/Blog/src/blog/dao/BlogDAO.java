@@ -13,7 +13,6 @@ import blog.services.PMF;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-
 public enum BlogDAO
 {
 	INSTANCE;
@@ -33,36 +32,29 @@ public enum BlogDAO
 		return blogPosts;
 
 	}
-	
-	public String getBlogPost(String title){
+
+	public BlogPost getBlogPost(String title)
+	{
 
 		Key key = KeyFactory.createKey(BlogPost.class.getSimpleName(), title);
-		
+
 		PersistenceManager pm1 = PMF.get().getPersistenceManager();
 		BlogPost found = null;
 		try
 		{
 			found = pm1.getObjectById(BlogPost.class, key);
-		}
-		catch (Exception e){
-			// something went wrong
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			return "Exception in search: " + sw.toString(); // stack trace as a string
-			
-		}
-		finally
+		} catch (Exception e)
+		{
+			// not found
+			return null;
+		} finally
 		{
 			pm1.close();
 		}
-		if (found != null) { 
-			return "Successful search";
-		}
-		return "Unsuccessful search";
+		return found;
 	}
 
-	public String saveBlogPost(String author, String title, String body)
+	public boolean saveBlogPost(String author, String title, String body)
 	{
 		/**
 		 * returns true on successful save, false if post with same title already
@@ -76,7 +68,13 @@ public enum BlogDAO
 		// create new object
 		BlogPost newPost = new BlogPost(author, key, body);
 
-		
+		BlogPost exists = null;
+		exists = getBlogPost(title);
+
+		if (exists != null)
+		{
+			return false;
+		}
 
 		// now we can save
 		synchronized (this)
@@ -92,10 +90,12 @@ public enum BlogDAO
 			} catch (Exception e)
 			{
 				// something went wrong
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				e.printStackTrace(pw);
-				return "Exception in add: " + sw.toString(); // stack trace as a string
+				return false;
+//				StringWriter sw = new StringWriter();
+//				PrintWriter pw = new PrintWriter(sw);
+//				e.printStackTrace(pw);
+//				return "Exception in add: " + sw.toString(); // stack trace as a
+//																			// string
 			} finally
 			{
 				pm.close();
@@ -105,8 +105,28 @@ public enum BlogDAO
 		}
 
 		// success
-		return "Successfully persisted, didn't successfully search";
+		return true;
 
+	}
+
+	public String deleteAllPosts()
+	{
+		List<BlogPost> posts;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query query = pm.newQuery(BlogPost.class);
+		try
+		{
+			posts = (List<BlogPost>) query.execute();
+			pm.deletePersistentAll(posts);
+		} catch (Exception e)
+		{
+			return "Exception: " + e.getMessage();
+		} finally
+		{
+			pm.close();
+		}
+
+		return "All posts deleted.n";
 	}
 
 }

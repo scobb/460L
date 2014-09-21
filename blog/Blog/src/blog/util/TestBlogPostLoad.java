@@ -12,7 +12,7 @@ import blog.entity.BlogPost;
  * */
 public class TestBlogPostLoad
 {
-	public static String addPosts(){
+	public static boolean addPosts(){
 		String author = "Steve Cobb";
 		String title = "1";
 		String body = "Test body";
@@ -22,7 +22,7 @@ public class TestBlogPostLoad
 	}
 	
 	public static String getBlogPost() {
-		return BlogDAO.INSTANCE.getBlogPost("1");
+		return BlogDAO.INSTANCE.getBlogPost("1").displayHtml();
 	}
 	
 	public static String getBlogPosts() { 
@@ -33,6 +33,10 @@ public class TestBlogPostLoad
 		}
 		
 		return retStr;
+	}
+	
+	public static String deleteAllPosts() { 
+		return BlogDAO.INSTANCE.deleteAllPosts();
 	}
 
 }
