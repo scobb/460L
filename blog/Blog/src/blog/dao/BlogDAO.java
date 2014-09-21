@@ -1,5 +1,7 @@
 package blog.dao;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -12,56 +14,99 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 
-public enum BlogDAO {
+public enum BlogDAO
+{
 	INSTANCE;
-	
-	public List<BlogPost> getBlogPosts() { 
+
+	public List<BlogPost> getBlogPosts()
+	{
 		List<BlogPost> blogPosts;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(BlogPost.class);
-		try {
+		try
+		{
 			blogPosts = (List<BlogPost>) query.execute();
-		}
-		finally { 
+		} finally
+		{
 			pm.close();
 		}
 		return blogPosts;
-		
+
 	}
 	
-	public boolean saveBlogPost(String author, String title, String body) { 
-		/** returns true on successful save, false if post with same title already exists **/
+	public String getBlogPost(String title){
+
+		Key key = KeyFactory.createKey(BlogPost.class.getSimpleName(), title);
+		
+		PersistenceManager pm1 = PMF.get().getPersistenceManager();
+		BlogPost found = null;
+		try
+		{
+			found = pm1.getObjectById(BlogPost.class, key);
+		}
+		catch (Exception e){
+			// something went wrong
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			return "Exception in search: " + sw.toString(); // stack trace as a string
+			
+		}
+		finally
+		{
+			pm1.close();
+		}
+		if (found != null) { 
+			return "Successful search";
+		}
+		return "Unsuccessful search";
+	}
+
+	public String saveBlogPost(String author, String title, String body)
+	{
+		/**
+		 * returns true on successful save, false if post with same title already
+		 * exists
+		 **/
 		// TODO: using title as a key - is this okay?
 		Key key = KeyFactory.createKey(BlogPost.class.getSimpleName(), title);
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		
+
 		// check if this title already exists
-		BlogPost result = pm.getObjectById(BlogPost.class, key);
-		if (result != null) {
-			// post with this title already exists
-			return false;
-		}
-		
+
 		// create new object
 		BlogPost newPost = new BlogPost(author, key, body);
+
 		
+
 		// now we can save
-		synchronized(this) { 
-			try { 
+		synchronized (this)
+		{
+
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+
+			BlogPost result = null;
+			try
+			{
 				pm.makePersistent(newPost);
-			}
-			catch (Exception e){
+				// result = pm.getObjectById(BlogPost.class, key);
+			} catch (Exception e)
+			{
 				// something went wrong
-				return false;
-			}
-			finally { 
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				return "Exception in add: " + sw.toString(); // stack trace as a string
+			} finally
+			{
 				pm.close();
+
 			}
+
 		}
-		
+
 		// success
-		return true;
-		
+		return "Successfully persisted, didn't successfully search";
+
 	}
 
 }

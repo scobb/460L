@@ -37,10 +37,7 @@ public class NewPostServlet extends HttpServlet {
 		try {
 			if (!body.isEmpty() && !title.isEmpty()) {
 				// create post object
-				if (!BlogDAO.INSTANCE.saveBlogPost(author, title, body)) {
-					// did not save -- duplicate title
-					// TODO: handle
-				}
+				BlogDAO.INSTANCE.saveBlogPost(author, title, body);
 			}
 		} catch (Exception e) {
 			throw new IOException(e.getMessage());
