@@ -20,7 +20,13 @@ public class TestBlogPostLoad
 		
 		return BlogDAO.INSTANCE.saveBlogPost(author, title, body);
 	}
-	
+	public static String markAsNotNew() { 
+		BlogPost bp = BlogDAO.INSTANCE.getBlogPost("1");
+		if ( BlogDAO.INSTANCE.markAsNotNew(bp) ) { 
+			return "Marked as not new.";
+		}
+		return "Marking as not new FAILED";
+	}
 	public static String getBlogPost() {
 		return BlogDAO.INSTANCE.getBlogPost("1").displayHtml();
 	}
@@ -37,6 +43,18 @@ public class TestBlogPostLoad
 	
 	public static String deleteAllPosts() { 
 		return BlogDAO.INSTANCE.deleteAllPosts();
+	}
+	
+	public static String getNewPosts() { 
+		List<BlogPost> newPosts = BlogDAO.INSTANCE.getNewBlogPosts();
+		if (newPosts != null) { 
+			String ret_str = "";
+			for (BlogPost post : newPosts) { 
+				ret_str += post.displayHtml();
+			}
+			return ret_str;
+		}
+		return "No new posts.";
 	}
 
 }

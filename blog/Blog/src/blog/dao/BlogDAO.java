@@ -1,7 +1,6 @@
 package blog.dao;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -31,6 +30,39 @@ public enum BlogDAO
 		}
 		return blogPosts;
 
+	}
+	
+	public List<BlogPost> getNewBlogPosts() { 
+		/** returns list of new posts or null if there are no new posts **/
+		List<BlogPost> posts = getBlogPosts();
+		if (posts == null) {
+			return null;
+		}
+		Iterator<BlogPost> iter= posts.iterator();
+		while (iter.hasNext()){
+			if (!iter.next().isNewPost()){
+				// remove non-new posts
+				iter.remove();
+			}
+		}
+		return posts;
+	}
+	
+	public boolean markAsNotNew(BlogPost bp) { 
+		/** returns true if blog post is successfully marked as not new **/
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			BlogPost bpData = pm.getObjectById(BlogPost.class, bp.getTitle());
+			bpData.setNewPost(false);
+		}
+		catch (Exception e) { 
+			return false;
+		}
+		finally { 
+			pm.close();
+		}
+		
+		return true;
 	}
 
 	public BlogPost getBlogPost(String title)

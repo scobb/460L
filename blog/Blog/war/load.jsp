@@ -8,17 +8,18 @@
 <body>
 	<h1>Initial Data Loader</h1>
 
-	<%--  <<%=TestBlogPostLoad.deleteAllPosts() %> --%>
+	<%-- <%=TestBlogPostLoad.deleteAllPosts() %> --%>
 	<br>
-	<%-- <%=TestBlogPostLoad.addPosts() --%>
+	<%=TestBlogPostLoad.addPosts()%>
 	<hr>
 
 
 	<%-- <%=TestBlogPostLoad.getBlogPosts()%> --%>
 	<br>
 	<%-- <%=TestBlogPostLoad.getBlogPost()%> --%>
- 	<%=TestSubscriber.addSubscriber("Steve Cobb",
-					"scobb1@utexas.edu")%>
+	<%=TestBlogPostLoad.getNewPosts() %>
+ 	<%-- <%=TestSubscriber.addSubscriber("Steve Cobb",
+					"scobb1@utexas.edu")%> --%>
 	<br>
 	<a href="Blog.html">Back to Home</a>
 </body>

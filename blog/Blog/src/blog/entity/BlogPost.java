@@ -33,6 +33,9 @@ public class BlogPost implements Serializable {
 		//perhaps form the HTML string of each blog post here?
 		// other option is to imbed it in the jsp and access the author, title by getters, setters
 		String ret_str = "<h1>" + this.title.getName() + "</h1>";
+		if (this.isNewPost()) {
+			ret_str += "<br>NEW<br>";
+		}
 		ret_str += "<hr>";
 		ret_str += "<h2>Posted by " + this.author + " on " + this.timestamp + "</h2>";
 		ret_str += this.body;
