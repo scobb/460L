@@ -1,6 +1,7 @@
 package blog.client;
 
 import blog.shared.FieldVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -39,6 +41,7 @@ public class Blog implements EntryPoint
 	/**
 	 * This is the entry point method.
 	 */
+	@Override
 	public void onModuleLoad()
 	{
 		final Button sendButton = new Button("Send");
@@ -74,13 +77,14 @@ public class Blog implements EntryPoint
 		dialogVPanel.add(textToServerLabel);
 		dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
 		dialogVPanel.add(serverResponseLabel);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 		dialogBox.setWidget(dialogVPanel);
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler()
 		{
+			@Override
 			public void onClick(ClickEvent event)
 			{
 				dialogBox.hide();
@@ -95,6 +99,7 @@ public class Blog implements EntryPoint
 			/**
 			 * Fired when the user clicks on the sendButton.
 			 */
+			@Override
 			public void onClick(ClickEvent event)
 			{
 				sendNameToServer();
@@ -103,6 +108,7 @@ public class Blog implements EntryPoint
 			/**
 			 * Fired when the user types in the nameField.
 			 */
+			@Override
 			public void onKeyUp(KeyUpEvent event)
 			{
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
@@ -132,6 +138,7 @@ public class Blog implements EntryPoint
 				greetingService.greetServer(textToServer,
 						new AsyncCallback<String>()
 						{
+							@Override
 							public void onFailure(Throwable caught)
 							{
 								// Show the RPC error message to the user
@@ -143,6 +150,7 @@ public class Blog implements EntryPoint
 								closeButton.setFocus(true);
 							}
 
+							@Override
 							public void onSuccess(String result)
 							{
 								dialogBox.setText("Remote Procedure Call");

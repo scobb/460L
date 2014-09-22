@@ -16,6 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class NewPostServlet extends HttpServlet {
 	private static final Logger _logger = Logger.getLogger(NewPostServlet.class.getName());
 
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		UserService userService = UserServiceFactory.getUserService();

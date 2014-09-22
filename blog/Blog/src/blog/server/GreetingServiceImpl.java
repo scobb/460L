@@ -2,6 +2,7 @@ package blog.server;
 
 import blog.client.GreetingService;
 import blog.shared.FieldVerifier;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -12,6 +13,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService
 {
 
+	@Override
 	public String greetServer(String input) throws IllegalArgumentException
 	{
 		// Verify that the input is valid. 

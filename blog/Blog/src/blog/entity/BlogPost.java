@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.Key;
 @PersistenceCapable
 public class BlogPost implements Serializable {
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.IDENTITY)
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	Key title;
 	private String author;
 	private String body;

@@ -40,7 +40,7 @@
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>Blog.html</welcome-file>
+		<welcome-file>blog.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!--  limit access to sending email -->

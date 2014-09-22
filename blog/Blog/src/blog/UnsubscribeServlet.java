@@ -10,6 +10,7 @@ import blog.dao.SubscriberDAO;
 
 public class UnsubscribeServlet extends HttpServlet{
 
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
