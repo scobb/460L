@@ -54,7 +54,7 @@
 					pageContext.setAttribute("post_author",
 							blogPost.getAuthor());
 					pageContext.setAttribute("post_title", blogPost
-							.getTitle().toString());
+							.getTitle().getName());
 	%>
 	<div class="post">
 		<h3 class="emphasized">${fn:escapeXml(post_title)}</h3>
