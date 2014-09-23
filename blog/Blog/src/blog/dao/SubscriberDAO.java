@@ -18,7 +18,7 @@ public enum SubscriberDAO {
 		/** returns list of subscribers or null on error **/
 		List<Subscriber> Subscribers = null;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query query = pm.newQuery(BlogPost.class);
+		Query query = pm.newQuery(Subscriber.class);
 		try {
 			Subscribers = (List<Subscriber>) query.execute();
 		} catch (Exception e) {
