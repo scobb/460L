@@ -21,6 +21,6 @@
  	<%-- <%=TestSubscriber.addSubscriber("Steve Cobb",
 					"scobb1@utexas.edu")%> --%>
 	<br>
-	<a href="Blog.html">Back to Home</a>
+	<a href="blog.jsp">Back to Home</a>
 </body>
 </html>
