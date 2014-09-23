@@ -18,7 +18,8 @@ blog/Blog/war/blog/*.cache.js
 blog/Blog/war/WEB-INF/deploy/
 blog/Blog/war/WEB-INF/classes/
 blog/Blog/war/WEB-INF/lib/
-
+blog/Blog/war/blog/*.gwt.rpc
+blog/Blog/war/blog/*.txt
 
 # App engine generated #
 blog/Blog/war/WEB-INF/appengine-generated/
