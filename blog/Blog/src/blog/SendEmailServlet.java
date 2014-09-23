@@ -28,8 +28,8 @@ public class SendEmailServlet extends HttpServlet
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException
 	{
-		// TODO: called by crontask - should send e-mail of all "new" posts to all
-		// subscribers, then mark all posts as not new
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
 		List<Subscriber> subscribers = SubscriberDAO.INSTANCE.getSubscribers();
 		List<BlogPost> newPosts = BlogDAO.INSTANCE.getNewBlogPosts();
 
@@ -44,15 +44,14 @@ public class SendEmailServlet extends HttpServlet
 			// persist that this blog post is no longer new
 			BlogDAO.INSTANCE.markAsNotNew(post);
 		}
+		// TODO: handle no new posts... do we not send an e-mail?
+		emailBody += "\nTo unsubscribe, go to http://cobbreynoldsblog.appspot.com/remove_email";
 
 		for (Subscriber subscriber : subscribers)
 		{
 			// TODO: send email
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
 			try
 			{
-				MimeMessage message = new MimeMessage(session, req.getInputStream());
 				Address fromAddress = new InternetAddress(
 						"admin@cobbreynoldsblog.appspotmail.com");
 				Address toAddress = new InternetAddress(subscriber.getEmail()
@@ -65,7 +64,7 @@ public class SendEmailServlet extends HttpServlet
 				outMessage.addRecipient(MimeMessage.RecipientType.TO, toAddress);
 				outMessage.setSubject(subject);
 				outMessage.setText(emailBody);
-				Transport.send(message);
+				Transport.send(outMessage);
 			} catch (MessagingException e)
 			{
 				_log.info("ERROR: Could not send out Email Results response : "
