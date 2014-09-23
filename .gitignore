@@ -15,8 +15,10 @@ www-test/
 
 # more caches and things from deploy #
 blog/Blog/war/blog/*.cache.js
-blog/Blog/war/WEB-INF/deploy
+blog/Blog/war/WEB-INF/deploy/
 blog/Blog/war/WEB-INF/classes/
+blog/Blog/war/WEB-INF/lib/
+
 
 # App engine generated #
-war/WEB-INF/appengine-generated/
+blog/Blog/war/WEB-INF/appengine-generated/
