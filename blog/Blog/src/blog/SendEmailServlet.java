@@ -33,23 +33,32 @@ public class SendEmailServlet extends HttpServlet
 		List<Subscriber> subscribers = SubscriberDAO.INSTANCE.getSubscribers();
 		List<BlogPost> newPosts = BlogDAO.INSTANCE.getNewBlogPosts();
 
-		String emailBody = "Hello subscriber,\nHere are the new blog posts from our travel blog:\n";
+		String emailBody = "Hello subscriber,\n";
 
-		for (BlogPost post : newPosts)
+		if (newPosts.size() == 0)
 		{
-			// TODO : do we actually want to send html here? or some plaintext
-			// version
-			emailBody += post.displayHtml();
+			// no new posts. sad face.
+			emailBody += "There are no new posts from our travel blog. You should contribute!";
+		} else
+		{
+			emailBody += "Here are the new blog posts from our travel blog:\n";
 
-			// persist that this blog post is no longer new
-			BlogDAO.INSTANCE.markAsNotNew(post);
+			for (BlogPost post : newPosts)
+			{
+				// TODO : do we actually want to send html here? or some plaintext
+				// version
+				emailBody += post.displayHtml();
+
+				// persist that this blog post is no longer new
+				BlogDAO.INSTANCE.markAsNotNew(post);
+			}
 		}
-		// TODO: handle no new posts... do we not send an e-mail?
-		emailBody += "\nTo unsubscribe, go to http://cobbreynoldsblog.appspot.com/remove_email";
+		
+		// add unsubscribe message. TODO: is this the right address?
+		emailBody += "\nTo unsubscribe, go to http://cobbreynoldsblog.appspot.com/unsubscribe";
 
 		for (Subscriber subscriber : subscribers)
 		{
-			// TODO: send email
 			try
 			{
 				Address fromAddress = new InternetAddress(
