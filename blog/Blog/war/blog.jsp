@@ -1,3 +1,4 @@
+<%@ page import="javax.servlet.http.Cookie"%>
 <%@ page import="blog.entity.*"%>
 <%@ page import="blog.dao.*"%>
 <%@ page import="java.util.List"%>
@@ -24,14 +25,17 @@
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="blog.jsp">home</a></b></td>
 				<%
-					if (user != null) {
+					if (user != null)
+					{
 						String email = user.getEmail();
 						Boolean subscribed = false;
-						
+
 						List<Subscriber> subscribers = SubscriberDAO.INSTANCE
 								.getSubscribers();
-						for (Subscriber sub : subscribers) {
-							if ((sub.getEmail().getName()).equals(email)) {
+						for (Subscriber sub : subscribers)
+						{
+							if ((sub.getEmail().getName()).equals(email))
+							{
 								subscribed = true;
 								break;
 							}
@@ -40,12 +44,14 @@
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="new_post.jsp">new post</a></b></td>
 				<%
-					if (subscribed) {
+					if (subscribed)
+						{
 				%>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="unsubscribe.jsp">unsubscribe</a></b></td>
 				<%
-					} else {
+					} else
+						{
 				%>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="subscribe.jsp">subscribe</a></b></td>
@@ -53,13 +59,14 @@
 					}
 						pageContext.setAttribute("user_name", user.getNickname());
 				%>
-				<td class="lesserWhiteText">${fn:escapeXml(user_name)} |<b><a
+				<td class="lesserWhiteText">${fn:escapeXml(user_name)}|<b><a
 						style="color: #FFFFFF"
 						href="<%=userService.createLogoutURL(request.getRequestURI())%>">
 							sign out</a></b>
 				</td>
 				<%
-					} else {
+					} else
+					{
 				%><td class="lesserWhiteText"><b><a style="color: #FFFFFF;"
 						href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
 							in</a></b></td>
@@ -73,19 +80,36 @@
 
 	<%
 		List<BlogPost> blogPosts = BlogDAO.INSTANCE.getBlogPosts();
-		if (!blogPosts.isEmpty()) {
-			for (BlogPost blogPost : blogPosts) {
-				pageContext.setAttribute("post_body", blogPost.getBody()
+		int last = 5;
+		if (!blogPosts.isEmpty())
+		{
+
+			// examine cookies to see if we need more
+			Cookie[] cookies = request.getCookies();
+			for (Cookie cookie : cookies)
+			{
+				if (cookie.getName().equals("showAll"))
+				{
+					// we're supposed to show all
+					last = blogPosts.size();
+					break;
+				}
+			}
+			for (int i = 0; i < last; i++)
+			{
+				pageContext.setAttribute("post_body", blogPosts.get(i).getBody()
 						.getValue());
 
-				if (blogPost.getAuthor() == null) {
+				if (blogPosts.get(i).getAuthor() == null)
+				{
 					// not good--shouldn't be able to post
 				}
 
-				else {
-					pageContext.setAttribute("post_author",
-							blogPost.getAuthor());
-					pageContext.setAttribute("post_title", blogPost
+				else
+				{
+					pageContext.setAttribute("post_author", blogPosts.get(i)
+							.getAuthor());
+					pageContext.setAttribute("post_title", blogPosts.get(i)
 							.getTitle().getName());
 	%>
 	<div class="post">
@@ -101,9 +125,19 @@
 		}
 			}
 
-		} else {
+		} else
+		{
 	%>
 	<h3>There are no posts.</h3>
+	<%
+		}
+	%>
+	<%
+		if (last != blogPosts.size())
+		{
+	%>
+	<button onclick="location.href = '/show_all';" id="showAllButton"
+		class="float-left submit-button">Show more...</button>
 	<%
 		}
 	%>

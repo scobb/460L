@@ -46,6 +46,16 @@
 		<url-pattern>/new_post</url-pattern>
 	</servlet-mapping>
 
+	
+	<servlet>
+		<servlet-name>showAll</servlet-name>
+		<servlet-class>blog.ShowAllServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>showAll</servlet-name>
+		<url-pattern>/show_all</url-pattern>
+	</servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
