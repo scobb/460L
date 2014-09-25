@@ -1,7 +1,5 @@
 package blog.dao;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import blog.services.PMF;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 
 public enum BlogDAO {
 	INSTANCE;
@@ -90,7 +89,7 @@ public enum BlogDAO {
 		return found;
 	}
 
-	public boolean saveBlogPost(String author, String title, String body) {
+	public boolean saveBlogPost(String author, String title, Text body) {
 		/**
 		 * returns true on successful save, false if post with same title
 		 * already exists

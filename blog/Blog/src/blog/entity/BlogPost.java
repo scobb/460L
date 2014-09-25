@@ -9,6 +9,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 @PersistenceCapable
 public class BlogPost implements Serializable {
@@ -16,12 +17,12 @@ public class BlogPost implements Serializable {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	Key title;
 	private String author;
-	private String body;
+	private Text body;
 	private Date timestamp;
 	private boolean newPost;
 	
 	/**Constructor **/
-	public BlogPost(String author, Key title, String body){
+	public BlogPost(String author, Key title, Text body){
 		this.setAuthor(author);
 		this.title = title;
 		this.body = body;
@@ -52,11 +53,11 @@ public class BlogPost implements Serializable {
 		this.title = title;
 	}
 
-	public String getBody() {
+	public Text getBody() {
 		return body;
 	}
 
-	public void setBody(String body) {
+	public void setBody(Text body) {
 		this.body = body;
 	}
 

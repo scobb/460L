@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import blog.dao.BlogDAO;
 
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -32,8 +33,7 @@ public class NewPostServlet extends HttpServlet {
 			// User is anonymous and cannot post; should not be on this page
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		}
-		String body = "";
-		body = req.getParameter("body");
+		Text body = new Text(req.getParameter("body"));
 		String title = "";
 		title = req.getParameter("title");
 		_logger.log(Level.INFO, "body " + body);

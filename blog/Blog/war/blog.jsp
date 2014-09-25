@@ -55,7 +55,7 @@
 		List<BlogPost> blogPosts = BlogDAO.INSTANCE.getBlogPosts();
 		if (!blogPosts.isEmpty()) {
 			for (BlogPost blogPost : blogPosts) {
-				pageContext.setAttribute("post_body", blogPost.getBody());
+				pageContext.setAttribute("post_body", blogPost.getBody().getValue());
 
 				if (blogPost.getAuthor() == null) {
 					// not good--shouldn't be able to post
