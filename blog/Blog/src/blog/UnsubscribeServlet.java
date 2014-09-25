@@ -19,7 +19,7 @@ public class UnsubscribeServlet extends HttpServlet{
 		if (!SubscriberDAO.INSTANCE.removeSubscriber(email)) {
 			// TODO: check for this cookie on the remove_email.html page to display an "Invalid email" message
 			Cookie cookie = new Cookie("badEmail", "true");
-	      cookie.setMaxAge(1);
+	      cookie.setMaxAge(3);
 			resp.addCookie(cookie);
 			// TODO: redirect to page that directed us here, say email wasn't found
 			resp.sendRedirect("/remove_email.jsp");

@@ -47,19 +47,39 @@ body {
 	text-shadow: 5px 5px 5px #5c5c5c;
 	text-align: left;
 }
+.headingWhiteText {
+	color: #FFFFFF;
+	font-size: 30pt;
+	text-align: left;
+	padding: 0px;
+	margin: 0px 0px 10px;
+}
 
 .lesserWhiteText {
 	font-family: sans-serif;
 	color: #FFFFFF;
 	font-size: 12pt;
 	padding: 5px 10px;
-	background: rgba(92, 92, 92, .6);
-	border-radius: 20px;
 	text-align: center;
 }
 
 .emphasized {
 	font-weight: 400;
+}
+
+.tableSpacing {
+	padding: 5px 10px;
+}
+
+.darkBackground {
+	background: rgba(92, 92, 92, .6);
+	border-radius: 20px;
+	padding: 20px 20px 45px;
+}
+
+.roundButton {
+	border-radius: 20px;
+	background: #FFFFFF;
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup,

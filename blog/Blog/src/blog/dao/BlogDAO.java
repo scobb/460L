@@ -1,5 +1,7 @@
 package blog.dao;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +14,7 @@ import blog.services.PMF;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-public enum BlogDAO
-{
+public enum BlogDAO {
 	INSTANCE;
 
 	public List<BlogPost> getBlogPosts()
@@ -21,6 +22,7 @@ public enum BlogDAO
 		List<BlogPost> blogPosts;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(BlogPost.class);
+		query.setOrdering("timestamp desc");
 		try
 		{
 			blogPosts = (List<BlogPost>) query.execute();
@@ -28,69 +30,70 @@ public enum BlogDAO
 		{
 			pm.close();
 		}
+		
+//		Collections.sort(blogPosts, new Comparator<BlogPost>{
+//			@Override
+//			int compare (BlogPost bp1, BlogPost bp2) {
+//				return (bp1.getTimestamp()).compareTo((bp2.getTimestamp()));
+//			}
+//		});
+		
 		return blogPosts;
 
 	}
-	
-	public List<BlogPost> getNewBlogPosts() { 
+
+	public List<BlogPost> getNewBlogPosts() {
 		/** returns list of new posts or null if there are no new posts **/
 		List<BlogPost> posts = getBlogPosts();
 		if (posts == null) {
 			return null;
 		}
-		Iterator<BlogPost> iter= posts.iterator();
-		while (iter.hasNext()){
-			if (!iter.next().isNewPost()){
+		Iterator<BlogPost> iter = posts.iterator();
+		while (iter.hasNext()) {
+			if (!iter.next().isNewPost()) {
 				// remove non-new posts
 				iter.remove();
 			}
 		}
 		return posts;
 	}
-	
-	public boolean markAsNotNew(BlogPost bp) { 
+
+	public boolean markAsNotNew(BlogPost bp) {
 		/** returns true if blog post is successfully marked as not new **/
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			BlogPost bpData = pm.getObjectById(BlogPost.class, bp.getTitle());
 			bpData.setNewPost(false);
-		}
-		catch (Exception e) { 
+		} catch (Exception e) {
 			return false;
-		}
-		finally { 
+		} finally {
 			pm.close();
 		}
-		
+
 		return true;
 	}
 
-	public BlogPost getBlogPost(String title)
-	{
+	public BlogPost getBlogPost(String title) {
 
 		Key key = KeyFactory.createKey(BlogPost.class.getSimpleName(), title);
 
 		PersistenceManager pm1 = PMF.get().getPersistenceManager();
 		BlogPost found = null;
-		try
-		{
+		try {
 			found = pm1.getObjectById(BlogPost.class, key);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			// not found
 			return null;
-		} finally
-		{
+		} finally {
 			pm1.close();
 		}
 		return found;
 	}
 
-	public boolean saveBlogPost(String author, String title, String body)
-	{
+	public boolean saveBlogPost(String author, String title, String body) {
 		/**
-		 * returns true on successful save, false if post with same title already
-		 * exists
+		 * returns true on successful save, false if post with same title
+		 * already exists
 		 **/
 		// TODO: using title as a key - is this okay?
 		Key key = KeyFactory.createKey(BlogPost.class.getSimpleName(), title);
@@ -103,33 +106,29 @@ public enum BlogDAO
 		BlogPost exists = null;
 		exists = getBlogPost(title);
 
-		if (exists != null)
-		{
+		if (exists != null) {
 			return false;
 		}
 
 		// now we can save
-		synchronized (this)
-		{
+		synchronized (this) {
 
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 
 			BlogPost result = null;
-			try
-			{
+			try {
 				pm.makePersistent(newPost);
 				// result = pm.getObjectById(BlogPost.class, key);
-			} catch (Exception e)
-			{
+			} catch (Exception e) {
 				// something went wrong
 				return false;
-//				StringWriter sw = new StringWriter();
-//				PrintWriter pw = new PrintWriter(sw);
-//				e.printStackTrace(pw);
-//				return "Exception in add: " + sw.toString(); // stack trace as a
-//																			// string
-			} finally
-			{
+				// StringWriter sw = new StringWriter();
+				// PrintWriter pw = new PrintWriter(sw);
+				// e.printStackTrace(pw);
+				// return "Exception in add: " + sw.toString(); // stack trace
+				// as a
+				// // string
+			} finally {
 				pm.close();
 
 			}
@@ -141,20 +140,16 @@ public enum BlogDAO
 
 	}
 
-	public String deleteAllPosts()
-	{
+	public String deleteAllPosts() {
 		List<BlogPost> posts;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(BlogPost.class);
-		try
-		{
+		try {
 			posts = (List<BlogPost>) query.execute();
 			pm.deletePersistentAll(posts);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			return "Exception: " + e.getMessage();
-		} finally
-		{
+		} finally {
 			pm.close();
 		}
 

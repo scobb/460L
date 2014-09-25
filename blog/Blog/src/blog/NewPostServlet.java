@@ -29,22 +29,23 @@ public class NewPostServlet extends HttpServlet {
 			// User is anonymous and cannot post; should not be on this page
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		}
-		String body = req.getParameter("body");
-		String title = req.getParameter("title");
-		if (body == null)
-			throw new IOException("Post body is required.");
-		if (title == null)
-			throw new IOException("Title is required.");
+		String body = "";
+		body = req.getParameter("body");
+		String title = "";
+		title = req.getParameter("title");
+		if (body.equals("") || title.equals(""))
+			resp.sendRedirect("/post_unsuccessful.jsp");
 		try {
 			if (!body.isEmpty() && !title.isEmpty()) {
 				// create post object
 				if (!BlogDAO.INSTANCE.saveBlogPost(author, title, body)) {
-					// Handle case where title already exists... maybe as simple as a redirect and ask for a new title?
+					resp.sendRedirect("/post_unsuccessful.jsp");
 				};
 			}
 		} catch (Exception e) {
 			throw new IOException(e.getMessage());
 
 		}
+		resp.sendRedirect("/post_success.jsp");
 	}
 }

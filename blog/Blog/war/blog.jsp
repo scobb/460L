@@ -19,24 +19,35 @@
 		User user = userService.getCurrentUser();
 	%>
 	<div style="float: right;">
-		<%
-			if (user != null) {
-				pageContext.setAttribute("user_name", user.getNickname());
-		%>
-		<p class="lesserWhiteText">
-			${fn:escapeXml(user_name)} | <b><a style="color: #FFFFFF"
-				href="<%=userService.createLogoutURL(request.getRequestURI())%>">sign
-					out</a></b>
-		</p>
-		<%
-			} else {
-		%>
-		<a class="lesserWhiteText"
-			href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
-			in</a>
-		<%
-			}
-		%>
+		<table class="darkBackground">
+			<tr>
+				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
+						href="blog.jsp">home</a></b></td>
+				<%
+					if (user != null) {
+				%>
+				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
+						href="new_post.jsp">new post</a></b></td>
+				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
+						href="subscribe.jsp">subscribe</a></b></td>
+				<%
+					pageContext.setAttribute("user_name", user.getNickname());
+				%>
+				<td class="lesserWhiteText">${fn:escapeXml(user_name)} |<b><a
+						style="color: #FFFFFF"
+						href="<%=userService.createLogoutURL(request.getRequestURI())%>">
+							sign out</a></b>
+				</td>
+				<%
+					} else {
+				%><td class="lesserWhiteText"><b><a style="color: #FFFFFF;"
+					href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
+						in</a></b></td>
+				<%
+					}
+				%>
+			</tr>
+		</table>
 	</div>
 	<h1 class="titleWhiteText">Travel Blog</h1>
 
@@ -58,8 +69,10 @@
 	%>
 	<div class="post">
 		<h3 class="emphasized">${fn:escapeXml(post_title)}</h3>
-		<p class="postBody">${fn:escapeXml(post_body)}</p>
-		<p style="text-align: right">
+		<blockquote>
+			<p class="postBody">${fn:escapeXml(post_body)}</p>
+		</blockquote>
+		<p style="text-align: right; font-size: 12pt;">
 			-<i>${fn:escapeXml(post_author)}</i>
 		</p>
 	</div>
