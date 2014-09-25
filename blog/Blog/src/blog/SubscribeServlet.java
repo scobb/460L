@@ -17,11 +17,21 @@ public class SubscribeServlet extends HttpServlet {
 		String email = req.getParameter("email");
 		String name = req.getParameter("name");
 		if (!SubscriberDAO.INSTANCE.addSubscriber(name, email)) {
-			// TODO: redirect to page that directed us here, say email wasn't found
+			// redirect to unsuccessful page
+			resp.sendRedirect("/subscribe_unsuccessful.jsp");
+		}
+		else {
+			// redirect to confirmation page
+			resp.sendRedirect("/subscribe_successful.jsp");
 		}
 		
-		// TODO: redirect to confirmation page
-		
+	}
+	
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		// if we arrive here via get, forward to subscribe
+		resp.sendRedirect("/subscribe.jsp");
 	}
 	
 }
