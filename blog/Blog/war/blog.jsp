@@ -56,7 +56,12 @@
 
 	<%
 		List<BlogPost> blogPosts = BlogDAO.INSTANCE.getBlogPosts();
-		int last = 5;
+	int last;
+		if (blogPosts.size() > 5){
+			last = 5;
+		} else {
+			last = blogPosts.size();
+		}
 		if (!blogPosts.isEmpty()) {
 
 			// examine cookies to see if we need more
