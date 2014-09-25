@@ -56,8 +56,8 @@
 
 	<%
 		List<BlogPost> blogPosts = BlogDAO.INSTANCE.getBlogPosts();
-	int last;
-		if (blogPosts.size() > 5){
+		int last;
+		if (blogPosts.size() > 5) {
 			last = 5;
 		} else {
 			last = blogPosts.size();
@@ -112,8 +112,8 @@
 		if (last != blogPosts.size()) {
 	%>
 	<div style="text-align: center; margin-bottom: 20px">
-		<button onclick="location.href = '/show_all';" id="showAllButton"
-			class="btn btn-default">View All</button>
+		<button onclick="location.href = '/show_all';" class="btn btn-default">View
+			All</button>
 	</div>
 	<%
 		}
