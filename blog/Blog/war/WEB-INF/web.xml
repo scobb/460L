@@ -46,24 +46,13 @@
 		<url-pattern>/new_post</url-pattern>
 	</servlet-mapping>
 
-	
-	<servlet>
-		<servlet-name>showAll</servlet-name>
-		<servlet-class>blog.ShowAllServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>showAll</servlet-name>
-		<url-pattern>/show_all</url-pattern>
-	</servlet-mapping>
-
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>blog.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!--  limit access to sending email -->
-	<security-constraint>
+ 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>send_email</web-resource-name>
 			<url-pattern>/send_email</url-pattern>
@@ -71,6 +60,6 @@
 		<auth-constraint>
 			<role-name>admin</role-name>
 		</auth-constraint>
-	</security-constraint>
+	</security-constraint> 
 
 </web-app>
