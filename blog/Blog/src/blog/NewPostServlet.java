@@ -1,6 +1,7 @@
 package blog;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
@@ -15,10 +16,12 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 public class NewPostServlet extends HttpServlet {
 	private static final Logger _logger = Logger.getLogger(NewPostServlet.class.getName());
+	Boolean failure;
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		failure = false;
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		String author = null;
@@ -33,19 +36,30 @@ public class NewPostServlet extends HttpServlet {
 		body = req.getParameter("body");
 		String title = "";
 		title = req.getParameter("title");
-		if (body.equals("") || title.equals(""))
-			resp.sendRedirect("/post_unsuccessful.jsp");
+		_logger.log(Level.INFO, "body " + body);
+		if (body.equals("") || title.equals("")) {
+			failure = true;
+		}
 		try {
-			if (!body.isEmpty() && !title.isEmpty()) {
+			if (!body.equals("") && !title.equals("")) {
 				// create post object
 				if (!BlogDAO.INSTANCE.saveBlogPost(author, title, body)) {
-					resp.sendRedirect("/post_unsuccessful.jsp");
+					_logger.log(Level.INFO, "save " + BlogDAO.INSTANCE.saveBlogPost(author, title, body));
+					failure = true;
 				};
+			}
+			else {
+				failure = true;
 			}
 		} catch (Exception e) {
 			throw new IOException(e.getMessage());
 
 		}
-		resp.sendRedirect("/post_success.jsp");
+		if (failure) {
+			resp.sendRedirect("/post_unsuccessful.jsp");
+		}
+		else {
+			resp.sendRedirect("/post_success.jsp");
+		}
 	}
 }
