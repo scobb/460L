@@ -23,35 +23,17 @@
 			<tr>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="blog.jsp">home</a></b></td>
+
+				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
+						href="subscribe.jsp">subscribe</a></b></td>
 				<%
 					if (user != null) {
 						String email = user.getEmail();
-						Boolean subscribed = false;
-						
-						List<Subscriber> subscribers = SubscriberDAO.INSTANCE
-								.getSubscribers();
-						for (Subscriber sub : subscribers) {
-							if ((sub.getEmail().getName()).equals(email)) {
-								subscribed = true;
-								break;
-							}
-						}
 				%>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="new_post.jsp">new post</a></b></td>
 				<%
-					if (subscribed) {
-				%>
-				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
-						href="unsubscribe.jsp">unsubscribe</a></b></td>
-				<%
-					} else {
-				%>
-				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
-						href="subscribe.jsp">subscribe</a></b></td>
-				<%
-					}
-						pageContext.setAttribute("user_name", user.getNickname());
+					pageContext.setAttribute("user_name", user.getNickname());
 				%>
 				<td class="lesserWhiteText">${fn:escapeXml(user_name)} |<b><a
 						style="color: #FFFFFF"
@@ -88,6 +70,9 @@
 				<button type="submit" class="btn btn-default" style="float: right">Subscribe</button>
 			</div>
 		</form>
+	</div>
+	<div class="unsubFooter" style="position: absolute;">
+		<b><a style="color: #FFFFFF;" href="unsubscribe.jsp">unsubscribe</a></b>
 	</div>
 </body>
 </html>

@@ -24,49 +24,25 @@
 			<tr>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="blog.jsp">home</a></b></td>
-				<%
-					if (user != null)
-					{
-						String email = user.getEmail();
-						Boolean subscribed = false;
 
-						List<Subscriber> subscribers = SubscriberDAO.INSTANCE
-								.getSubscribers();
-						for (Subscriber sub : subscribers)
-						{
-							if ((sub.getEmail().getName()).equals(email))
-							{
-								subscribed = true;
-								break;
-							}
-						}
+				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
+						href="subscribe.jsp">subscribe</a></b></td>
+				<%
+					if (user != null) {
+						String email = user.getEmail();
 				%>
 				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
 						href="new_post.jsp">new post</a></b></td>
 				<%
-					if (subscribed)
-						{
+					pageContext.setAttribute("user_name", user.getNickname());
 				%>
-				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
-						href="unsubscribe.jsp">unsubscribe</a></b></td>
-				<%
-					} else
-						{
-				%>
-				<td class="lesserWhiteText"><b><a style="color: #FFFFFF"
-						href="subscribe.jsp">subscribe</a></b></td>
-				<%
-					}
-						pageContext.setAttribute("user_name", user.getNickname());
-				%>
-				<td class="lesserWhiteText">${fn:escapeXml(user_name)}|<b><a
+				<td class="lesserWhiteText">${fn:escapeXml(user_name)} |<b><a
 						style="color: #FFFFFF"
 						href="<%=userService.createLogoutURL(request.getRequestURI())%>">
 							sign out</a></b>
 				</td>
 				<%
-					} else
-					{
+					} else {
 				%><td class="lesserWhiteText"><b><a style="color: #FFFFFF;"
 						href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
 							in</a></b></td>
@@ -81,36 +57,32 @@
 	<%
 		List<BlogPost> blogPosts = BlogDAO.INSTANCE.getBlogPosts();
 		int last = 5;
-		if (!blogPosts.isEmpty())
-		{
+		if (!blogPosts.isEmpty()) {
 
 			// examine cookies to see if we need more
 			Cookie[] cookies = request.getCookies();
-			for (Cookie cookie : cookies)
-			{
-				if (cookie.getName().equals("showAll"))
-				{
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("showAll")) {
 					// we're supposed to show all
 					last = blogPosts.size();
 					break;
 				}
 			}
-			for (int i = 0; i < last; i++)
-			{
-				pageContext.setAttribute("post_body", blogPosts.get(i).getBody()
-						.getValue());
+			for (int i = 0; i < last; i++) {
+				pageContext.setAttribute("post_body", blogPosts.get(i)
+						.getBody().getValue());
 
-				if (blogPosts.get(i).getAuthor() == null)
-				{
+				if (blogPosts.get(i).getAuthor() == null) {
 					// not good--shouldn't be able to post
 				}
 
-				else
-				{
-					pageContext.setAttribute("post_author", blogPosts.get(i)
-							.getAuthor());
+				else {
+					pageContext.setAttribute("post_author", blogPosts
+							.get(i).getAuthor());
 					pageContext.setAttribute("post_title", blogPosts.get(i)
 							.getTitle().getName());
+					pageContext.setAttribute("post_date", blogPosts.get(i)
+							.getTimestamp().toString());
 	%>
 	<div class="post">
 		<h3 class="emphasized">${fn:escapeXml(post_title)}</h3>
@@ -118,28 +90,31 @@
 			<p class="postBody">${fn:escapeXml(post_body)}</p>
 		</blockquote>
 		<p style="text-align: right; font-size: 12pt;">
-			-<i>${fn:escapeXml(post_author)}</i>
+			-<i>${fn:escapeXml(post_author)}</i> (${fn:escapeXml(post_date)})
 		</p>
 	</div>
 	<%
 		}
 			}
 
-		} else
-		{
+		} else {
 	%>
 	<h3>There are no posts.</h3>
 	<%
 		}
 	%>
 	<%
-		if (last != blogPosts.size())
-		{
+		if (last != blogPosts.size()) {
 	%>
-	<button onclick="location.href = '/show_all';" id="showAllButton"
-		class="float-left submit-button">Show more...</button>
+	<div style="text-align: center; margin-bottom: 20px">
+		<button onclick="location.href = '/show_all';" id="showAllButton"
+			class="btn btn-default">View All</button>
+	</div>
 	<%
 		}
 	%>
+	<div class="unsubFooter">
+		<b><a style="color: #FFFFFF;" href="unsubscribe.jsp">unsubscribe</a></b>
+	</div>
 </body>
 </html>
