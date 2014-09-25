@@ -9,29 +9,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import blog.dao.SubscriberDAO;
 
-public class UnsubscribeServlet extends HttpServlet {
+public class UnsubscribeServlet extends HttpServlet
+{
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+			throws IOException
+	{
 
 		String email = req.getParameter("email");
-		if (!email.equals("")) {
+		if (!email.equals(""))
+		{
 
-			if (!SubscriberDAO.INSTANCE.removeSubscriber(email)) {
+			if (!SubscriberDAO.INSTANCE.removeSubscriber(email))
+			{
 				resp.sendRedirect("/unsubscribe_unsuccessful.jsp");
+			} else
+			{
+				resp.sendRedirect("/unsubscribe_successful.jsp");
 			}
-
-			resp.sendRedirect("/unsubscribe_successful.jsp");
-		}
-		else {
+		} else
+		{
 			resp.sendRedirect("/unsubscribe_unsuccessful.jsp");
 		}
 	}
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+			throws IOException
+	{
 		// TODO: confirm this address
 		resp.sendRedirect("/unsubscribe.jsp");
 	}
