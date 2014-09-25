@@ -32,6 +32,7 @@ public class NewPostServlet extends HttpServlet {
 		} else {
 			// User is anonymous and cannot post; should not be on this page
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
+			return;
 		}
 		Text body = new Text(req.getParameter("body"));
 		String title = "";
@@ -61,5 +62,12 @@ public class NewPostServlet extends HttpServlet {
 		else {
 			resp.sendRedirect("/post_success.jsp");
 		}
+	}
+
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		// redirect to the jsp
+		resp.sendRedirect("new_post.jsp");
 	}
 }
