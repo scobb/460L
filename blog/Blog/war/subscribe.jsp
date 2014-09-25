@@ -71,12 +71,23 @@
 	</div>
 	<h1 class="titleWhiteText">Travel Blog</h1>
 
-	<div class="darkBackground" style="padding-bottom: 20px;">
-		<h1 class="headingWhiteText" style="color: #FFFFFF">Thank You</h1>
-		<p class="lesserWhiteText" style="text-align: left; padding: 0px;">You
-			have successfully posted to the Travel Blog. Have you <b><a style="color: #FFFFFF"
-						href="subscribe.jsp">subscribed</a></b> for
-			our daily emails?</p>
+	<div class="darkBackground">
+		<h1 class="headingWhiteText" style="color: #FFFFFF">Subscribe</h1>
+		<form action="/subscribe" method="post">
+			<div>
+				<textarea name="name" class="form-control" rows="1"
+					placeholder="Name"></textarea>
+			</div>
+			<br>
+			<div>
+				<textarea name="email" class="form-control" rows="1"
+					placeholder="Email"></textarea>
+			</div>
+			<br>
+			<div>
+				<button type="submit" class="btn btn-default" style="float: right">Subscribe</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>
